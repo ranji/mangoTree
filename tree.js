@@ -1,6 +1,7 @@
 $(function() {
 	
 //	dataBindTree($("#root"),{});
+	var fakeData = flat2Tree(fakeFlatData);
 	dataBindTree($("#root"),fakeData);
 	
 	$(document).on("click", ".add-node", function(e) {
@@ -64,7 +65,6 @@ $(function() {
 
 	$(document).on('click', '.node-title', function(e) {
 		var $li = $(this).closest('li');
-		//$li.children('span,a,button').hide();
 		$li.children('.display').hide();
 		$li.children('.editor').show();
 	});
