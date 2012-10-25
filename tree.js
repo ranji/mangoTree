@@ -1,8 +1,7 @@
-$(function() {
-	
-//	dataBindTree($("#root"),{});
-	var fakeData = flat2Tree(fakeFlatData);
-	dataBindTree($("#root"),fakeData);
+$(function () {	
+	var	nodes={},tree = {};
+	tree = flat2Tree(nodes,fakeFlatData);
+	renderTree($("#root"),tree);
 	
 	$(document).on("click", ".add-node", function(e) {
 		var $li = $(this).closest('li');
@@ -31,13 +30,13 @@ $(function() {
 		var displayDiv = $("<div class='display'></div>")
 						.append($("<span class = 'node-title'>"+ (title || "click to edit me") + "</span>"))
 						.append($("<a class = 'node-link' href='#'>"+(link||"#")+"</a>"))
-						.append($("<button class = 'add-node'>add another</button>"))			
+						.append($("<button class = 'add-node'>add another</button>"));			
 
 		var $newLi = $("<li class='node'></li>")
 						.append(displayDiv)
 						.append(editorDiv);
 		return $newLi;
-	};
+	}
 
 	$(document).on("click", ".save-node", function(e) {
 		var $li = $(this).closest('li');
@@ -69,13 +68,13 @@ $(function() {
 		$li.children('.editor').show();
 	});
 
-	function dataBindTree(root, data) {
+	function renderTree (root, data) {
 		if ($.isEmptyObject(data)) {
 			var rootData = {
 				title: 'click to edit me',
 				link: '#',
 				more: []};
-			dataBindTree(root,rootData);	
+			renderTree(root,rootData);	
 		}else{
 			var $li = getNewLi(data.title,data.link);
 			root.append($li);
@@ -83,11 +82,27 @@ $(function() {
 				$rootUl = $("<ul class='node-ul'></ul>");
 				$li.append($rootUl);
 				for(var i = 0;i<data.more.length;i++){
-					dataBindTree($rootUl,data.more[i])
+					renderTree($rootUl,data.more[i]);
 				}
 			}
 			
 		}
-	}
+	};
+	
+	function flat2Tree (nodes,flat) {
+			for (var i = 0; i < flat.length; i++) {
+				var item = {
+					title: flat[i].title,
+					link: flat[i].link,
+					id: flat[i].id,
+					parent: flat[i].parent,
+					more: []};
+
+				nodes[item.id] = item ;
+				if(nodes[item.parent] !== undefined) nodes[item.parent].more.push(item);
+
+			}
+			return nodes['1'];
+		};
 
 });

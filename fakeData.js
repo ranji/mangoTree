@@ -44,21 +44,4 @@ var fakeFlatData = [{
 	id: '1/1/2',
 	parent: '1/1'}];
 
-var flat2Tree = function(flat) {
-		var tree = {};
-		var nodes = {};
-		for (var i = 0; i < flat.length; i++) {
-			var item = {
-				title: flat[i].title,
-				link: flat[i].link,
-				id: flat[i].id,
-				parent: flat[i].parent,
-				more: []};
 
-			nodes[item.id] = item ;
-			if(nodes[item.parent] !== undefined) nodes[item.parent].more.push(item);
-
-		}
-		tree = nodes['1'];
-		return tree;
-	};
