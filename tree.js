@@ -67,7 +67,7 @@ $(function() {
 		}
 		var $rootLi = getNewLi(data.title, data.link);
 		renderBranches($rootLi, data.more)
-		root.append($rootLi); // do dom manip after all appends..move it one line down
+		root.append($rootLi); 
 	};
 
 	function renderBranches($rootLi, children) {
