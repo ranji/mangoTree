@@ -9,21 +9,30 @@ $(function() {
 		var $ul = $li.find('ul');
 
 		if ($ul.length === 0) {
-			var newUl = $("<ul class='node-ul'></ul>").append(getNewLi());
+			var newUl = $("<ul class='node-ul'></ul>").append(getNewLi({}));
 			$li.append(newUl);
 		} else {
-			$ul.first().append(getNewLi());
+			$ul.first().append(getNewLi({}));
 		}
 
 	});
 
 
 
-	function getNewLi(title, link) {
-		var editorDiv = $("<div class='editor'></div>").append($("<label>topic: </label>")).append($("<input type ='text' class='title'/>")).append($("<label>link: </label>")).append($("<input type ='text' class='link'/>")).append($("<button class = 'save-node'>save</button>")).append($("<button class = 'cancel-node'>cancel</button>")).hide();
-		var displayDiv = $("<div class='display'></div>").append($("<span class = 'node-title'>" + (title || "click to edit me") + "</span>")).append($("<a class = 'node-link' href='#'>" + (link || "#") + "</a>")).append($("<button class = 'add-node'>add another</button>"));
+	function getNewLi(data) {
+		var editorDiv = $("<div class='editor'></div>")
+							.append($("<label>topic: </label>"))
+							.append($("<input type ='text' class='title'/>"))
+							.append($("<label>link: </label>"))
+							.append($("<input type ='text' class='link'/>"))
+							.append($("<button class = 'save-node'>save</button>"))
+							.append($("<button class = 'cancel-node'>cancel</button>")).hide();
+		var displayDiv = $("<div class='display'></div>")
+							.append($("<span class = 'node-title'>" + (data.title || "click to edit me") + "</span>"))
+							.append($("<a class = 'node-link' href='#'>" + (data.link || "#") + "</a>"))
+							.append($("<button class = 'add-node'>add another</button>"));
 
-		var $newLi = $("<li class='node'></li>").append(displayDiv).append(editorDiv);
+		var $newLi = $("<li class='node' id = '"+data.id+"'></li>").append(displayDiv).append(editorDiv);
 		return $newLi;
 	}
 
@@ -65,7 +74,7 @@ $(function() {
 				more: []
 			};
 		}
-		var $rootLi = getNewLi(data.title, data.link);
+		var $rootLi = getNewLi(data);
 		renderBranches($rootLi, data.more)
 		root.append($rootLi); 
 	};
@@ -81,7 +90,7 @@ $(function() {
 		}
 		
 		for (var i = 0; i < children.length; i++) {
-			var $li = getNewLi(children[i].title, children[i].link);
+			var $li = getNewLi(children[i]);
 			$ul.append($li);
 			if (children[i].more.length) {
 				renderBranches($li, children[i].more);
