@@ -42,6 +42,11 @@ var fakeFlatData = [{
 	title: '1.1.2',
 	link: '#',
 	id: '1/1/2',
-	parent: '1/1'}];
+	parent: '1/1'},
+	{
+	title: '1.2',
+	link: '#',
+	id: '1/2',
+	parent: '1'}];
 
 
