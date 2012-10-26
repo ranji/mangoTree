@@ -66,8 +66,8 @@ $(function() {
 			};
 		}
 		var $rootLi = getNewLi(data.title, data.link);
-		root.append($rootLi); // do dom manip after all appends..move it one line down
 		renderBranches($rootLi, data.more)
+		root.append($rootLi); // do dom manip after all appends..move it one line down
 	};
 
 	function renderBranches($rootLi, children) {
