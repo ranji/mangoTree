@@ -5,19 +5,43 @@ $(function() {
 	renderTree($("#root"), tree);
 
 	$(document).on("click", ".add-node", function(e) {
+		
 		var $li = $(this).closest('li');
+		var parentId = $li.attr('id');
 		var $ul = $li.find('ul');
-
-		if ($ul.length === 0) {
-			var newUl = $("<ul class='node-ul'></ul>").append(getNewLi({}));
-			$li.append(newUl);
-		} else {
-			$ul.first().append(getNewLi({}));
-		}
-
+	
+		if ($ul.length) {
+			var $parentUl = $ul.first();
+			var siblingId = $parentUl.children('li').last().attr('id'); }
+		else {
+			$parentUl = $("<ul class='node-ul'></ul>");
+			$li.append($parentUl);
+		} 
+		
+		var data = getNodeData(parentId,siblingId);
+		var newLi = getNewLi(data);
+		$parentUl.append(newLi);
 	});
+	
+	function getNodeData(parentId,siblingId){
+		var newId = inferId(parentId,siblingId);
+		return {
+			id : newId,
+			parent: parentId,
+			title: 'click to edit me',
+			link: '#'
+		};
+	}
 
-
+	function inferId(parentId,siblingId){
+		var id = 1;
+		if(siblingId){
+			var idStr = siblingId.split('/').pop();
+			id = parseInt(idStr)+1; 
+		}
+		id = parentId+"/"+id;
+		return id;
+	}
 
 	function getNewLi(data) {
 		var editorDiv = $("<div class='editor'></div>")
@@ -28,11 +52,11 @@ $(function() {
 							.append($("<button class = 'save-node'>save</button>"))
 							.append($("<button class = 'cancel-node'>cancel</button>")).hide();
 		var displayDiv = $("<div class='display'></div>")
-							.append($("<span class = 'node-title'>" + (data.title || "click to edit me") + "</span>"))
-							.append($("<a class = 'node-link' href='#'>" + (data.link || "#") + "</a>"))
+							.append($("<span class = 'node-title'>" + data.title + "</span>"))
+							.append($("<a class = 'node-link' href='#'>" + data.link  + "</a>"))
 							.append($("<button class = 'add-node'>add another</button>"));
 
-		var $newLi = $("<li class='node' id = '"+data.id+"'></li>").append(displayDiv).append(editorDiv);
+		var $newLi = $("<li class='node' id = '"+data.id+"' data-parentid = '"+data.parent+"'></li>").append(displayDiv).append(editorDiv);
 		return $newLi;
 	}
 
@@ -50,7 +74,21 @@ $(function() {
 
 		$display.show();
 		$editor.hide();
+		//todo: update nodes[]
+		var data = {
+			id:$li.attr('id'),
+			parent:$li.data('parentid'),
+			title:$title.val(),
+			link:$link.val()
+		};
+		$(nodes).trigger("nodeChanged", data);
 	});
+
+    $(nodes).bind("nodeChanged", function(e, data) {
+    	alert(data.parent);
+    });
+
+	
 
 	$(document).on("click", ".cancel-node", function(e) {
 		var $li = $(this).closest('li');
