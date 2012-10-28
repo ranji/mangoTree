@@ -70,7 +70,9 @@ $(function() {
 		var $editor = $li.children('.editor');
 
 		$display.children('.node-title').text($title.val());
-		$display.children('.node-link').attr("href", $link.val());
+		$display.children('.node-link')
+			.text($link.val())
+			.attr("href", $link.val());
 
 		$display.show();
 		$editor.hide();
@@ -100,8 +102,17 @@ $(function() {
 
 	$(document).on('click', '.node-title', function(e) {
 		var $li = $(this).closest('li');
-		$li.children('.display').hide();
-		$li.children('.editor').show();
+		var $display = $li.children('.display');
+		var $editor = $li.children('.editor');
+		var $title = $editor.children('.title');
+		var $link = $editor.children('.link');
+		var $nodeTitle = $display.children('.node-title');
+		var $nodeLink = $display.children('.node-link');
+		$title.val($nodeTitle.text());
+		$link.val($nodeLink.text());
+		
+		$display.hide();
+		$editor.show();
 	});
 
 	function renderTree(root, data) {
