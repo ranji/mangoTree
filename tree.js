@@ -1,4 +1,4 @@
-var mangoTree = function($) {
+var mangoTree = function($,options) {
 	var nodes = {},
 		tree = {};
 	var nodeSavedCallbacks = [];	
@@ -56,10 +56,15 @@ var mangoTree = function($) {
 		var displayDiv = $("<div class='display'></div>")
 							.append($("<span class = 'node-title'>" + data.title + "</span>"))
 							.append($("<span>&nbsp;~&nbsp;</span>"))
-							.append($("<a class = 'node-link' href='#'>" + data.link  + "</a>"))
-							.append($("<button class = 'add-node'>add a child topic</button>"));
+							.append($("<a class = 'node-link' href='#'>" + data.link  + "</a>"));
 
-		var $newLi = $("<li class='node' id = '"+data.id+"' data-parentid = '"+data.parent+"'></li>").append(displayDiv).append(editorDiv);
+		var $newLi = $("<li class='node' id = '"+data.id+"' data-parentid = '"+data.parent+"'></li>").append(displayDiv);					
+		
+		if (options.editable){
+			displayDiv.append($("<button class = 'add-node'>add a child topic</button>"));
+			$newLi.append(editorDiv);
+		}
+		
 		return $newLi;
 	}
 
