@@ -1,9 +1,11 @@
-$(function() {
+var mangoTree = function($) {
 	var nodes = {},
 		tree = {};
+	var nodeSavedCallbacks = [];	
 	tree = flat2Tree(nodes, fakeFlatData);
 	renderTree($("#root"), tree);
-
+	
+	
 	$(document).on("click", ".add-node", function(e) {
 		
 		var $li = $(this).closest('li');
@@ -53,8 +55,9 @@ $(function() {
 							.append($("<button class = 'cancel-node'>cancel</button>")).hide();
 		var displayDiv = $("<div class='display'></div>")
 							.append($("<span class = 'node-title'>" + data.title + "</span>"))
+							.append($("<span>&nbsp;~&nbsp;</span>"))
 							.append($("<a class = 'node-link' href='#'>" + data.link  + "</a>"))
-							.append($("<button class = 'add-node'>add another</button>"));
+							.append($("<button class = 'add-node'>add a child topic</button>"));
 
 		var $newLi = $("<li class='node' id = '"+data.id+"' data-parentid = '"+data.parent+"'></li>").append(displayDiv).append(editorDiv);
 		return $newLi;
@@ -87,7 +90,10 @@ $(function() {
 	});
 
     $(nodes).bind("nodeChanged", function(e, data) {
-    	alert(data.parent);
+    	//save the item ?? update the tree in db??
+		for(var i = 0;i<nodeSavedCallbacks.length;i++){
+			nodeSavedCallbacks[i](e,data);
+		}
     });
 
 	
@@ -147,7 +153,6 @@ $(function() {
 		}
 	};
 
-
 		function flat2Tree(nodes, flat) {
 			for (var i = 0; i < flat.length; i++) {
 				var item = {
@@ -164,5 +169,10 @@ $(function() {
 			}
 			return nodes['1'];
 		};
-
-	});
+		
+		return {
+			nodeSaved :function (callback){
+			nodeSavedCallbacks.push(callback);
+			}
+		}
+	};

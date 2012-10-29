@@ -26,4 +26,11 @@
 
 <script src="tree.js"></script>
 <script src="fakedata.js"></script>
+<script>
+	$(function(){
+		var myTree = mangoTree($);
+		myTree.nodeSaved(function(e,data){
+			alert('hi');});
+	})
+</script>
 </html>
