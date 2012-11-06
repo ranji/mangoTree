@@ -11,13 +11,7 @@
 <body>
 	<div id="container">
 		        <ul id="root">
-	
-	    <!--            <li class="node root">
-	                    <span class = "node-title">click to edit me</span>
-	                    <a class = "node-link" href="#">link</a>
-	                    <button class = "add-node">add another</button>
-	                </li>
-	-->
+
 	            </ul>
 	
 	  </div>
@@ -29,11 +23,13 @@
 <script>
 	$(function(){
 		var options = {
-			editable:false
+			rootUl:'root',
+			editable:true
 		};
 		var myTree = mangoTree($,options);
 		myTree.nodeSaved(function(e,data){
-			alert('hi');});
+			//alert('save here');
+			});
 	})
 </script>
 </html>

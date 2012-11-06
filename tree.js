@@ -2,11 +2,13 @@ var mangoTree = function($,options) {
 	var nodes = {},
 		tree = {};
 	var nodeSavedCallbacks = [];	
+	var $root = $("#"+options.rootUl); 
 	tree = flat2Tree(nodes, fakeFlatData);
+	
 	renderTree($("#root"), tree);
 	
 	
-	$(document).on("click", ".add-node", function(e) {
+	$root.on("click", ".add-node", function(e) {
 		
 		var $li = $(this).closest('li');
 		var parentId = $li.attr('id');
@@ -68,7 +70,7 @@ var mangoTree = function($,options) {
 		return $newLi;
 	}
 
-	$(document).on("click", ".save-node", function(e) {
+	$root.on("click", ".save-node", function(e) {
 		var $li = $(this).closest('li');
 
 		var $title = $li.find('.title');
@@ -103,7 +105,7 @@ var mangoTree = function($,options) {
 
 	
 
-	$(document).on("click", ".cancel-node", function(e) {
+	$root.on("click", ".cancel-node", function(e) {
 		var $li = $(this).closest('li');
 		var $display = $li.children('.display');
 		var $editor = $li.children('.editor');
@@ -111,7 +113,7 @@ var mangoTree = function($,options) {
 		$editor.hide();
 	});
 
-	$(document).on('click', '.node-title', function(e) {
+	$root.on('click', '.node-title', function(e) {
 		var $li = $(this).closest('li');
 		var $display = $li.children('.display');
 		var $editor = $li.children('.editor');
